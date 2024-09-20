@@ -1,4 +1,4 @@
-from modules.website import Website, WebsiteData
+from modules.website import Website, WebProductData
 
 
 product_urls = [
@@ -9,7 +9,7 @@ product_urls = [
 
 for url in product_urls:
     webpage = Website(url)
-    web_data = WebsiteData(webpage)
+    web_data = WebProductData(webpage)
 
     print(web_data.product_title)
     print(web_data.product_price)

@@ -4,6 +4,8 @@ from utils.utils import is_valid_price_format
 
 
 class Website:
+    """Class to model a website url HTML data"""
+
     def __init__(self, url):
         self.url = url
         self.soup = self.get_soup()
@@ -20,7 +22,9 @@ class Website:
         return BeautifulSoup(res.text, "html.parser")
 
 
-class WebsiteData:
+class WebProductData:
+    """Class to model the product data given a website object"""
+
     def __init__(self, website_object):
         self.web_obj = website_object
         self.product_title = ""
