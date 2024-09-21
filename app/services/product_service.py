@@ -1,6 +1,6 @@
+import re
 import requests
 from bs4 import BeautifulSoup
-from utils.utils import is_valid_price_format
 
 
 class Website:
@@ -36,6 +36,13 @@ class WebProductData:
         self._get_product_title()
         self._get_product_price()
 
+    def is_valid_price_format(self, price):
+        """Check if given price has a valid format '0,00€', '23,65 €', '10.99$', etc."""
+        if not price:
+            return False
+        pattern = r"^\d+[\.,]?\d*\s?[€$]$"
+        return bool(re.match(pattern, price.strip()))
+
     def _get_product_title(self):
         try:
             self.product_title = self.web_obj.soup.find(
@@ -49,7 +56,7 @@ class WebProductData:
 
         # get default price
         price = self._get_default_product_price(self.web_obj.soup)
-        if is_valid_price_format(price):
+        if self.is_valid_price_format(price):
             self.product_price = price
 
         # get price in book product
@@ -57,7 +64,7 @@ class WebProductData:
             prices = self._get_book_product_price(self.web_obj.soup)
             valid_prices = set()
             for price in prices:
-                if is_valid_price_format(price):
+                if self.is_valid_price_format(price):
                     valid_prices.add(price)
             self.product_price = " | ".join(valid_prices)
 
