@@ -4,7 +4,7 @@ from .resources.product import Product, ProductList, ProductClearAll
 from .db import db
 
 
-def create_app():
+def create_app() -> Flask:
     app = Flask(__name__)
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///data.db"
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False

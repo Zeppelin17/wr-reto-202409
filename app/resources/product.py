@@ -2,19 +2,20 @@ from flask_restful import Resource, reqparse
 from app.models.product_model import ProductModel
 from app.services.product_service import Website, WebProductData
 from datetime import datetime
+from typing import Tuple
 
 
 class Product(Resource):
     """Product manager"""
 
-    def get(self, product_id):
+    def get(self, product_id: int) -> Tuple[dict, int]:
         product = ProductModel.find_by_id(product_id)
         if product:
             return product.json(), 200
 
         return {"message": f"Product with id {product_id} not found"}, 404
 
-    def post(self):
+    def post(self) -> Tuple[dict, int]:
         parser = reqparse.RequestParser()
         parser.add_argument("url", type=str, required=True)
         parser.add_argument("price_trigger", type=float, required=True)
@@ -42,14 +43,14 @@ class Product(Resource):
 
         return {"message": f"Item {new_product.id} created"}, 201
 
-    def delete(self, product_id):
+    def delete(self, product_id: int) -> Tuple[dict, int]:
         product = ProductModel.find_by_id(product_id)
         if product:
             product.delete_from_db()
             return {"message": f"Product with id {product_id} deleted"}, 200
         return {"message": f"Product with id {product_id} not found"}, 404
 
-    def put(self, product_id):
+    def put(self, product_id: int) -> Tuple[dict, int]:
         product = ProductModel.find_by_id(product_id)
         if product:
             parser = reqparse.RequestParser()
@@ -61,11 +62,13 @@ class Product(Resource):
 
 
 class ProductList(Resource):
-    def get(self):
-        return {"products": [product.json() for product in ProductModel.find_all()]}
+    def get(self) -> Tuple[dict, int]:
+        return {
+            "products": [product.json() for product in ProductModel.find_all()]
+        }, 200
 
 
 class ProductClearAll(Resource):
-    def get(self):
+    def get(self) -> dict:
         ProductModel.delete_all_from_db()
         return {"message": "All products deleted"}

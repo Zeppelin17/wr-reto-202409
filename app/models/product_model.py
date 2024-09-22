@@ -18,14 +18,16 @@ class ProductModel(db.Model):
     url = db.Column(db.String(255), nullable=False)
     create_datetime = db.Column(db.DateTime, nullable=False)
 
-    def __init__(self, name, price, trigger, url, created):
+    def __init__(
+        self, name: str, price: float, trigger: float, url: str, created: str
+    ) -> None:
         self.name = name
         self.price = price
         self.price_trigger = trigger
         self.url = url
         self.create_datetime = created
 
-    def json(self):
+    def json(self) -> dict:
         return {
             "id": self.id,
             "name": self.name,
@@ -35,26 +37,26 @@ class ProductModel(db.Model):
         }
 
     @classmethod
-    def find_by_name(cls, name):
+    def find_by_name(cls, name: str) -> "ProductModel":
         return cls.query.filter_by(name=name).first()
 
     @classmethod
-    def find_by_id(cls, _id):
+    def find_by_id(cls, _id: int) -> "ProductModel":
         return cls.query.filter_by(id=_id).first()
 
     @classmethod
-    def find_all(cls):
+    def find_all(cls: "ProductModel") -> list:
         return cls.query.all()
 
-    def save_to_db(self):
+    def save_to_db(self) -> None:
         db.session.add(self)
         db.session.commit()
 
-    def delete_from_db(self):
+    def delete_from_db(self) -> None:
         db.session.delete(self)
         db.session.commit()
 
     @classmethod
-    def delete_all_from_db(cls):
+    def delete_all_from_db(cls: "ProductModel") -> None:
         db.session.query(cls).delete()
         db.session.commit()
