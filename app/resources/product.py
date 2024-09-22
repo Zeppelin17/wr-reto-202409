@@ -24,7 +24,7 @@ class Product(Resource):
         web_data = WebProductData(webpage)
         product_data = {
             "name": web_data.product_title,
-            "price": web_data.product_price,
+            "price": min(web_data.get_float_price_list()),
             "trigger": data.get("price_trigger"),
             "url": data.get("url"),
             "created": datetime.now(),
