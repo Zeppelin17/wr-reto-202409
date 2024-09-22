@@ -16,4 +16,10 @@ def create_app():
     api.add_resource(ProductList, "/products")
     api.add_resource(ProductClearAll, "/clear-products")
 
+    # create db tables
+    with app.app_context():
+        print("Creating tables...")
+        print(db.metadata.tables)  # Verifica que las tablas estén registradas
+        db.create_all()
+
     return app
