@@ -27,10 +27,11 @@ class ProductModel(db.Model):
 
     def json(self):
         return {
+            "id": self.id,
             "name": self.name,
             "price": self.price,
             "price_trigger": self.price_trigger,
-            "create_datetime": self.create_datetime,
+            "create_datetime": self.create_datetime.isoformat(),
         }
 
     @classmethod
@@ -51,4 +52,9 @@ class ProductModel(db.Model):
 
     def delete_from_db(self):
         db.session.delete(self)
+        db.session.commit()
+
+    @classmethod
+    def delete_all_from_db(cls):
+        db.session.query(cls).delete()
         db.session.commit()

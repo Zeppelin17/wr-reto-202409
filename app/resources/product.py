@@ -67,5 +67,5 @@ class ProductList(Resource):
 
 class ProductClearAll(Resource):
     def get(self):
-        ProductModel.delete_from_db()
+        ProductModel.delete_all_from_db()
         return {"message": "All products deleted"}
